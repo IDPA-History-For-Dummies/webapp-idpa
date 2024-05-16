@@ -1,0 +1,38 @@
+@mixin asiScrollbar($color: rgba(var(--v-theme-secondary)), $trackColor: rgba(var(--v-theme-secondary), 0.1), $size: 8px) {
+  &::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color;
+    border-radius: calc($size / 2);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $trackColor;
+  }
+}
+
+.v-data-table-header__content {
+  > i {
+    margin-left: 0.5rem;
+    transform: scale(0.75);
+  }
+}
+
+.text-info {
+  color: rgba(var(--v-theme-info), 1);
+}
+
+.text-error {
+  color: rgba(var(--v-theme-error), 1);
+}
+
+.text-success {
+  color: rgba(var(--v-theme-success), 1);
+}
+
+.text-warning {
+  color: rgba(var(--v-theme-warning), 1);
+}

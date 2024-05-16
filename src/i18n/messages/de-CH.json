@@ -1,0 +1,13 @@
+{
+  "application": {
+    "name": "IDPA History for Dummies",
+    "nameShort": "IDPA"
+  },
+  "page": {
+    "home": "Home",
+    "notFound": "Seite nicht gefunden",
+    "profile": "Benutzerprofil",
+    "login": "Login",
+    "test": "Testseite"
+  }
+}
