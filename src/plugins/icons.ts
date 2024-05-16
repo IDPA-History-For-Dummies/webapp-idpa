@@ -11,9 +11,7 @@ import {
 	faCheck,
 	faCircle,
 	faCircleDot,
-	faCog,
 	faCopy,
-	faDraftingCompass,
 	faEllipsisVertical,
 	faExclamationCircle,
 	faEye,
@@ -28,13 +26,11 @@ import {
 	faPlus,
 	faQuestion,
 	faRotate,
-	faSitemap,
 	faSpinner,
 	faSquare as fasFaSquare,
 	faSquareDashed,
 	faStar as fasFaStar,
 	faStarHalfStroke,
-	faTicketAlt,
 	faTimes,
 	faTrash,
 	faTriangleExclamation
@@ -97,14 +93,6 @@ export class Icons {
 	public reload = Icons.convert(faRotate);
 	public color = Icons.convert(faPalette);
 	public colorValue = Icons.convert(fasFaSquare);
-
-	// ASI ICONS
-
-	public slaTicket = Icons.convert(faTicketAlt);
-	public slaTicketCategory = Icons.convert(faSitemap);
-	public statePlanning = Icons.convert(faSitemap);
-	public globalSetting = Icons.convert(faCog);
-	public system = Icons.convert(faDraftingCompass);
 
 	public constructor() {
 		Object.entries(this).forEach(e => {

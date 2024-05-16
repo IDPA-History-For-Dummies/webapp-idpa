@@ -1,9 +1,9 @@
 import {useDisplay} from "vuetify";
-import {AsiDirection, AsiSize} from "@/models/common/AsiComponentTypes";
+import {IDPADirection, IDPASize} from "@/models/common/IDPAComponentTypes";
 
 export class LayoutHelper {
 
-	private readonly sizes: AsiSize[] = [
+	private readonly sizes: IDPASize[] = [
 		'x-small',
 		'small',
 		'default',
@@ -15,27 +15,27 @@ export class LayoutHelper {
 		return useDisplay().mobile.value ? 4 : 6;
 	}
 
-	public margin(direction: AsiDirection = 'a'): string {
+	public margin(direction: IDPADirection = 'a'): string {
 		return `m${direction}-${this.spacingSize()}`;
 	}
 
-	public padding(direction: AsiDirection = 'a'): string {
+	public padding(direction: IDPADirection = 'a'): string {
 		return `p${direction}-${this.spacingSize()}`;
 	}
 
-	public sizeStepDown(size: AsiSize | undefined, amount: number = 1): AsiSize | undefined {
+	public sizeStepDown(size: IDPASize | undefined, amount: number = 1): IDPASize | undefined {
 		if (size === undefined) return undefined;
 		if (amount < 0) amount = 0;
 		return this.shiftSize(size, amount * -1);
 	}
 
-	public sizeStepUp(size: AsiSize | undefined, amount: number = 1): AsiSize | undefined {
+	public sizeStepUp(size: IDPASize | undefined, amount: number = 1): IDPASize | undefined {
 		if (size === undefined) return undefined;
 		if (amount < 0) amount = 0;
 		return this.shiftSize(size, amount);
 	}
 
-	private shiftSize(size: AsiSize, steps: number): AsiSize {
+	private shiftSize(size: IDPASize, steps: number): IDPASize {
 		const index = this.sizes.indexOf(size);
 		const shiftedIndex = index + steps;
 		if (shiftedIndex < 0) {

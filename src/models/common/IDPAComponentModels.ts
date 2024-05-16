@@ -1,12 +1,12 @@
 import {RouteLocationRaw} from 'vue-router';
 import {FrontendError} from "@/models/common/ErrorModels";
 import {IFrontendModel} from "@/models/common/FrontendModels";
-import {AsiAnchor, AsiCardKeyValueValue, AsiDensity, AsiVariant} from "@/models/common/IDPAComponentTypes";
+import {IDPAAnchor, IDPACardKeyValueValue, IDPADensity, IDPAVariant} from "@/models/common/IDPAComponentTypes";
 
 export interface IIDPACardKeyValueEntry extends IFrontendModel {
 	key?: string;
 	title?: string;
-	value?: AsiCardKeyValueValue | AsiCardKeyValueValue[] | (() => AsiCardKeyValueValue | AsiCardKeyValueValue[]);
+	value?: IDPACardKeyValueValue | IDPACardKeyValueValue[] | (() => IDPACardKeyValueValue | IDPACardKeyValueValue[]);
 	icon?: string;
 	iconColor?: string;
 	wrap?: boolean;
@@ -16,7 +16,7 @@ export interface IIDPACardKeyValueEntry extends IFrontendModel {
 export interface IIDPAAction<T = any> extends IFrontendModel {
 	click: (event: Event, payload?: T) => void;
 	disabled?: boolean | ((payload?: T) => boolean);
-	density?: AsiDensity;
+	density?: IDPADensity;
 	visible?: boolean | ((payload?: T) => boolean);
 	confirm?: boolean;
 	confirmText?: string;
@@ -27,11 +27,11 @@ export interface IIDPAAction<T = any> extends IFrontendModel {
 export interface IIDPAActionButton<T = any> extends IIDPAAction<T> {
 	icon: string | ((payload?: T) => string);
 	tooltip?: string | ((payload?: T) => string);
-	tooltipLocation?: NonNullable<AsiAnchor>;
+	tooltipLocation?: NonNullable<IDPAAnchor>;
 	color?: string | ((payload?: T) => string);
 	loading?: boolean | ((payload?: T) => boolean);
 	size?: string | number;
-	variant?: AsiVariant;
+	variant?: IDPAVariant;
 	rotation?: number;
 }
 
@@ -48,7 +48,7 @@ export interface IIDPADialogFooterButton<T = any> extends IIDPAAction<T> {
 	color?: string | ((payload?: T) => string);
 	loading?: boolean | ((payload?: T) => boolean);
 	size?: string | number;
-	variant?: AsiVariant;
+	variant?: IDPAVariant;
 }
 
 export interface IIDPAEnumOption<T> extends IFrontendModel {

@@ -1,4 +1,4 @@
-@mixin asiScrollbar($color: rgba(var(--v-theme-secondary)), $trackColor: rgba(var(--v-theme-secondary), 0.1), $size: 8px) {
+@mixin IDPAScrollbar($color: rgba(var(--v-theme-secondary)), $trackColor: rgba(var(--v-theme-secondary), 0.1), $size: 8px) {
   &::-webkit-scrollbar {
     width: $size;
     height: $size;
