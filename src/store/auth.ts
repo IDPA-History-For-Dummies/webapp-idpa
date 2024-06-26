@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import {AxiosError, AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig} from "axios";
-import useUserService from "@/compositions/services/user";
 import {useUserStore} from "@/store/user";
 
 interface IAuthStore {
@@ -29,27 +28,6 @@ export const useAuthStore = defineStore('auth', {
 			this.accessToken = accessToken;
 			await useUserStore().afterLogin(userId);
 			return Promise.resolve();
-		},
-		async login(accessToken: string): Promise<void> {
-			if (this.isLoggedIn) {
-				return Promise.reject('Auth: trying to login when already logged in');
-			}
-
-			try {
-				this.accessToken = accessToken;
-				const user = await useUserService().userFromAccessToken(accessToken);
-				this.userId = user.id;
-				this.accessToken = null;
-				await this.setAccessToken(accessToken, user.id);
-			} catch (err) {
-				this.accessToken = null;
-				console.error('error while fetching user with access token');
-				return Promise.reject();
-			}
-			return Promise.resolve();
-		},
-		async logout(): Promise<void> {
-			return this.clearAccessToken();
 		},
 		interceptRequestFulfilled(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
 			//prepare headers if necessary

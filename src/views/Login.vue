@@ -27,7 +27,6 @@
 		if (!valid.value || accessToken.value === null) return;
 		try {
 			loading.value = true;
-			await authStore.login(accessToken.value);
 		} catch (err) {
 			return Promise.reject();
 		} finally {

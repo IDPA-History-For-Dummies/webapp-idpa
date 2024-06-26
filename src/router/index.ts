@@ -1,6 +1,6 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router';
-import Home from "@/views/home/Home.vue";
+import Home from "@/views/Home.vue";
 import {RouteNames} from "@/compositions/helpers/route";
 import Base from "@/layouts/Base.vue";
 import LayoutModal from "@/layouts/LayoutModal.vue";
