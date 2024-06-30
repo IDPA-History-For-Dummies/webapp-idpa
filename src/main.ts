@@ -1,33 +1,24 @@
-/**
- * main.ts
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
-
-// Components
 import App from './App.vue';
 
-// Composables
-import {createApp} from 'vue';
 
-// Plugins
-import {registerPlugins} from '@/plugins';
-
-//Styles
-import './scss/global.scss';
+import { createApp } from 'vue';
 
 import PrimeVue from 'primevue/config';
-
-import 'primevue/resources/themes/saga-blue/theme.css';
-import 'primevue/resources/primevue.min.css';
+import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
 
 const app = createApp(App);
 
+app.use(PrimeVue, {
+	theme: {
+		preset: Aura,
+		options: {
+			prefix: 'p',
+			darkModeSelector: 'system',
+			cssLayer: false
+		},
+	},
 
-app.use(PrimeVue,{ unstyled: false});
-
-registerPlugins(app);
+});
 
 app.mount('#app');

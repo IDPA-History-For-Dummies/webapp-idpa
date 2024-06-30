@@ -10,19 +10,26 @@
 						<div class="card search-card">
 							<div class="p-grid p-align-center p-nogutter horizontal-container">
 								<div class="p-field p-col p-mr-2">
-									<IconField class="topicSearch">
-										<InputIcon class="p-inputicon">
-											<i class="pi pi-search" />
-										</InputIcon>
-										<InputText class="p-inputtext p-component" id="search" v-model="searchQuery" placeholder="Search for a topic..." />
-									</IconField>
+									<label for="search">Search for Topic:</label>
+									<InputText id="search" v-model="searchQuery" placeholder="Search for a topic..." />
 								</div>
 								<div class="p-field p-col p-mr-2">
 									<label for="language">Language</label>
-									<Dropdown id="language" v-model="selectedLanguage" :options="languages" optionLabel="label" placeholder="Select a language" />
+									<Dropdown
+										id="language"
+										v-model="selectedLanguage"
+										:options="languages"
+										optionLabel="label"
+										placeholder="Select a language"
+									/>
 								</div>
 								<div class="p-field p-d-flex p-ai-end">
-									<Button label="Search" icon="pi pi-search" @click="performSearch" class="p-button p-ml-auto" />
+									<Button
+										label="Search"
+										icon="pi pi-search"
+										@click="performSearch"
+										class="p-button p-ml-auto"
+									/>
 								</div>
 							</div>
 						</div>
@@ -34,11 +41,27 @@
 						<h2 v-html="theme.topicName"></h2>
 						<p v-html="formatText(theme.description)"></p>
 						<h3>Example</h3>
-						<MonacoEditor v-model="theme.example" language="javascript" theme="vs-dark" height="300px"/>
+						<MonacoEditor
+							v-model="theme.example"
+							language="javascript"
+							theme="vs-dark"
+							height="300px"
+						/>
 						<h3>Exercise</h3>
 						<p v-html="formatText(theme.question)"></p>
-						<MonacoEditor v-model="codeSnippet" language="javascript" theme="vs-dark" height="300px" v-bind:readonly="false"/>
-						<Button label="Check" icon="pi pi-check" class="p-button-warning p-mt-2" @click="checkExercise" />
+						<MonacoEditor
+							v-model="codeSnippet"
+							language="javascript"
+							theme="vs-dark"
+							height="300px"
+							:readonly="false"
+						/>
+						<Button
+							label="Check"
+							icon="pi pi-check"
+							class="p-button-warning p-mt-2"
+							@click="checkExercise"
+						/>
 					</div>
 					<div class="card content-card" v-else-if="!loading">
 						<p>No data available. Please enter a topic and select a language to search.</p>
@@ -58,8 +81,6 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 import BlockUI from 'primevue/blockui';
-import IconField from 'primevue/iconfield';
-import InputIcon from 'primevue/inputicon';
 
 interface LanguageOption {
 	label: string;
@@ -80,7 +101,6 @@ export default defineComponent({
 		MonacoEditor,
 		InputText,
 		Dropdown,
-		// eslint-disable-next-line vue/no-reserved-component-names
 		Button,
 		ProgressSpinner,
 		BlockUI,
@@ -178,6 +198,7 @@ main {
 .search-card {
 	background-color: #ffffff;
 	border: 1px solid #e0e0e0;
+	color: black;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	margin-bottom: 20px;
@@ -204,7 +225,8 @@ main {
 	height: 100px;
 }
 
-h2, h3 {
+h2,
+h3 {
 	color: #007bff;
 	margin-bottom: 10px;
 }
