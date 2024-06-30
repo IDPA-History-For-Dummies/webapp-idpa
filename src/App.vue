@@ -4,17 +4,17 @@
 			<h1>Programming For Dummies</h1>
 		</header>
 		<main>
+			<Toast class="custom-toast"/>
 			<div class="p-grid p-justify-center">
 				<div class="p-col-12 p-md-10 p-lg-8">
 					<BlockUI :blocked="loading">
 						<div class="card search-card">
 							<div class="p-grid p-align-center p-nogutter horizontal-container">
 								<div class="p-field p-col p-mr-2">
-									<label for="search">Search for Topic:</label>
 									<InputText id="search" v-model="searchQuery" placeholder="Search for a topic..." />
 								</div>
 								<div class="p-field p-col p-mr-2">
-									<label for="language">Language</label>
+									<label for="language">Language: </label>
 									<Dropdown
 										id="language"
 										v-model="selectedLanguage"
@@ -39,29 +39,28 @@
 					</div>
 					<div class="card content-card" v-if="!loading && theme">
 						<h2 v-html="theme.topicName"></h2>
-						<p v-html="formatText(theme.description)"></p>
-						<h3>Example</h3>
-						<MonacoEditor
-							v-model="theme.example"
-							language="javascript"
-							theme="vs-dark"
-							height="300px"
-						/>
-						<h3>Exercise</h3>
-						<p v-html="formatText(theme.question)"></p>
-						<MonacoEditor
-							v-model="codeSnippet"
-							language="javascript"
-							theme="vs-dark"
-							height="300px"
-							:readonly="false"
-						/>
-						<Button
-							label="Check"
-							icon="pi pi-check"
-							class="p-button-warning p-mt-2"
-							@click="checkExercise"
-						/>
+						<Accordion :value="['0']" multiple >
+							<AccordionPanel value="0">
+								<AccordionHeader>Description</AccordionHeader>
+								<AccordionContent>
+									<p v-html="formatText(theme.description)"></p>
+								</AccordionContent>
+							</AccordionPanel>
+							<AccordionPanel value="1">
+								<AccordionHeader>Example</AccordionHeader>
+								<AccordionContent>
+									<MonacoEditor class="code-block" v-model="theme.example"/>
+								</AccordionContent>
+							</AccordionPanel>
+							<AccordionPanel value="2">
+								<AccordionHeader>Exercise</AccordionHeader>
+								<AccordionContent>
+									<p v-html="formatText(theme.question)"></p>
+									<MonacoEditor class="code-block" v-model="codeSnippet" :readonly="false"/>
+									<Button class="check-button p-button-warning p-mt-2" type="button" label="Check" icon="pi pi-check" :loading="checkLoading"	@click="checkExercise" />
+								</AccordionContent>
+							</AccordionPanel>
+						</Accordion>
 					</div>
 					<div class="card content-card" v-else-if="!loading">
 						<p>No data available. Please enter a topic and select a language to search.</p>
@@ -81,6 +80,12 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import ProgressSpinner from 'primevue/progressspinner';
 import BlockUI from 'primevue/blockui';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 
 interface LanguageOption {
 	label: string;
@@ -104,6 +109,11 @@ export default defineComponent({
 		Button,
 		ProgressSpinner,
 		BlockUI,
+		Toast,
+		Accordion,
+		AccordionPanel,
+		AccordionHeader,
+		AccordionContent,
 	},
 	setup() {
 		const searchQuery = ref('');
@@ -120,6 +130,8 @@ export default defineComponent({
 		const theme = ref<InformaticTopic | null>(null);
 		const codeSnippet = ref('');
 		const loading = ref(false);
+		const checkLoading = ref(false);
+		const toast = useToast();
 
 		const loadTheme = async (topicName: string, language: LanguageOption) => {
 			try {
@@ -144,10 +156,24 @@ export default defineComponent({
 		const checkExercise = async () => {
 			if (theme.value) {
 				try {
+					checkLoading.value = true;
 					const response = await api.checkCode(theme.value.question, codeSnippet.value);
-					alert(`Result: ${response.data.questionAnswered ? 'Correct' : 'Incorrect'}\nHint: ${response.data.hint}`);
+					toast.add({
+						severity: response.data.questionAnswered ? 'success' : 'error',
+						summary: response.data.questionAnswered ? 'Correct' : 'Incorrect',
+						detail: response.data.hint,
+						sticky: true,
+					});
 				} catch (error) {
 					console.error('Failed to submit code snippet:', error);
+					toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Failed to submit code snippet',
+						sticky: true,
+					});
+				} finally{
+					checkLoading.value = false;
 				}
 			}
 		};
@@ -166,6 +192,7 @@ export default defineComponent({
 			theme,
 			codeSnippet,
 			loading,
+			checkLoading,
 			performSearch,
 			checkExercise,
 			formatText,
@@ -183,6 +210,8 @@ body {
 	color: #333;
 }
 
+
+
 .app-header {
 	background-color: #007bff;
 	color: white;
@@ -196,9 +225,9 @@ main {
 }
 
 .search-card {
-	background-color: #ffffff;
-	border: 1px solid #e0e0e0;
-	color: black;
+	background-color: #2f2f2f;
+	border: 1px solid #000000;
+	color: white;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	margin-bottom: 20px;
@@ -206,8 +235,8 @@ main {
 }
 
 .content-card {
-	background-color: #ffffff;
-	border: 1px solid #e0e0e0;
+	background-color: #2f2f2f;
+	border: 1px solid #000000;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	padding: 20px;
@@ -216,6 +245,7 @@ main {
 .horizontal-container {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 1rem;
 }
 
 .loading-container {
@@ -223,6 +253,14 @@ main {
 	justify-content: center;
 	align-items: center;
 	height: 100px;
+}
+
+.code-block{
+	margin-top: 10px;
+}
+
+.check-button{
+	margin-top: 10px;
 }
 
 h2,
