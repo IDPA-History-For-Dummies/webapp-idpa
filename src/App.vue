@@ -4,7 +4,7 @@
 			<h1>Programming For Dummies</h1>
 		</header>
 		<main>
-			<Toast class="custom-toast"/>
+			<Toast position="bottom-right" class="custom-toast"/>
 			<div class="p-grid p-justify-center">
 				<div class="p-col-12 p-md-10 p-lg-8">
 					<BlockUI :blocked="loading">
@@ -137,10 +137,16 @@ export default defineComponent({
 			try {
 				const response = await api.getTopic(topicName, language.value);
 				theme.value = response.data;
-				codeSnippet.value = theme.value.codeSnippet || '';
+				codeSnippet.value = theme.value?.codeSnippet || '';
 			} catch (error) {
 				console.error('Failed to load theme:', error);
 				theme.value = null;
+				toast.add({
+						severity: 'error',
+						summary: 'Error getting Data',
+						detail: 'An Error occurred while getting Data',
+						life: 5000
+					});
 			} finally {
 				loading.value = false;
 			}
@@ -162,7 +168,6 @@ export default defineComponent({
 						severity: response.data.questionAnswered ? 'success' : 'error',
 						summary: response.data.questionAnswered ? 'Correct' : 'Incorrect',
 						detail: response.data.hint,
-						sticky: true,
 					});
 				} catch (error) {
 					console.error('Failed to submit code snippet:', error);
@@ -170,7 +175,7 @@ export default defineComponent({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Failed to submit code snippet',
-						sticky: true,
+						life: 5000,
 					});
 				} finally{
 					checkLoading.value = false;
@@ -225,9 +230,8 @@ main {
 }
 
 .search-card {
-	background-color: #2f2f2f;
-	border: 1px solid #000000;
-	color: white;
+	background-color: var(--p-content-background);
+	color: var(--p-content-color);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	margin-bottom: 20px;
@@ -235,8 +239,7 @@ main {
 }
 
 .content-card {
-	background-color: #2f2f2f;
-	border: 1px solid #000000;
+	background-color: var(--p-content-background);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	padding: 20px;
