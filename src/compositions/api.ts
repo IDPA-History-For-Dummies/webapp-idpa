@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-	baseURL: 'https://localhost:7167/informatics-api/v1/informatics', // Prolly no die falsch addresse
+	baseURL: 'https://programmingfordummiesapi.azurewebsites.net/informatics-api/v1/informatics', // Prolly no die falsch addresse
 	headers: {
 		'Content-Type': 'application/json',
 	},
