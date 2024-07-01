@@ -49,14 +49,14 @@
 							<AccordionPanel value="1">
 								<AccordionHeader>Example</AccordionHeader>
 								<AccordionContent>
-									<MonacoEditor class="code-block" v-model="theme.example"/>
+									<MonacoEditor class="code-block" :language="selectedLanguage?.value" v-model="theme.example"/>
 								</AccordionContent>
 							</AccordionPanel>
 							<AccordionPanel value="2">
 								<AccordionHeader>Exercise</AccordionHeader>
 								<AccordionContent>
 									<p v-html="formatText(theme.question)"></p>
-									<MonacoEditor class="code-block" v-model="codeSnippet" :readonly="false"/>
+									<MonacoEditor class="code-block" :language="selectedLanguage?.value" v-model="codeSnippet" :readonly="false"/>
 									<Button class="check-button p-button-warning p-mt-2" type="button" label="Check" icon="pi pi-check" :loading="checkLoading"	@click="checkExercise" />
 								</AccordionContent>
 							</AccordionPanel>
@@ -120,12 +120,12 @@ export default defineComponent({
 		const selectedLanguage = ref<LanguageOption | null>(null);
 		const languages = ref<LanguageOption[]>([
 			{ label: 'C#', value: 'csharp' },
-			{ label: 'Java', value: 'java' },
-			{ label: 'Python', value: 'python' },
-			{ label: 'JavaScript', value: 'javascript' },
-			{ label: 'SQL', value: 'sql' },
-			{ label: 'Html', value: 'html' },
-			{ label: 'Css', value: 'css' },
+    		{ label: 'Java', value: 'java' },
+    		{ label: 'Python', value: 'python' },
+    		{ label: 'JavaScript', value: 'javascript' },
+    		{ label: 'SQL', value: 'sql' },
+    		{ label: 'HTML', value: 'html' },
+    		{ label: 'CSS', value: 'css' },
 		]);
 		const theme = ref<InformaticTopic | null>(null);
 		const codeSnippet = ref('');
