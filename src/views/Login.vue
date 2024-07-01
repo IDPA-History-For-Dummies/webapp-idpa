@@ -2,7 +2,7 @@
 </template>
 
 <script setup lang="ts">
-	import {useAuthStore} from "@/store/auth";
+	// import {useAuthStore} from "@/store/auth";
 	import {computed, ref} from "vue";
 	import {useI18n} from "vue-i18n";
 	import {ValidationRule} from "@/common/validation/Validator";
@@ -10,7 +10,7 @@
 	import useIcons from "@/plugins/icons";
 
 	const {t} = useI18n();
-	const authStore = useAuthStore();
+	// const authStore = useAuthStore();
 	const icons = useIcons();
 
 	const loading = ref<boolean>(false);

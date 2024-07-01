@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance} from "axios";
-import {useAuthStore} from "@/store/auth";
+// import {useAuthStore} from "@/store/auth";
 
 //create axios instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -8,14 +8,14 @@ const axiosInstance: AxiosInstance = axios.create({
 
 //request interceptors
 axiosInstance.interceptors.request.use(
-	(config) => useAuthStore().interceptRequestFulfilled(config),
+	// (config) => useAuthStore().interceptRequestFulfilled(config),
 	(error) => Promise.reject(error),
 );
 
 //response interceptors
 axiosInstance.interceptors.response.use(
-	(response) => response,
-	(error: AxiosError<any, any>): any => useAuthStore().interceptResponseRejected(error),
+	// (response) => response,
+	// (error: AxiosError<any, any>): any => useAuthStore().interceptResponseRejected(error),
 );
 
 export function useAxios(): AxiosInstance {

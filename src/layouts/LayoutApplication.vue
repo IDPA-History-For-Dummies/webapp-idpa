@@ -1,17 +1,17 @@
 <template>
-	<template v-if="authStore.isLoggedIn">
-		<TopBar/>
-		<v-main class="d-flex flex-column">
-			<router-view/>
-		</v-main>
-	</template>
+<!--	<template v-if="authStore.isLoggedIn">-->
+<!--		<TopBar/>-->
+<!--		<v-main class="d-flex flex-column">-->
+<!--			<router-view/>-->
+<!--		</v-main>-->
+<!--	</template>-->
 </template>
 
 <script setup lang="ts">
-	import {useAuthStore} from '@/store/auth';
+	// import {useAuthStore} from '@/store/auth';
 	import TopBar from '@/layouts/application/TopBar.vue';
 
-	const authStore = useAuthStore();
+	// const authStore = useAuthStore();
 </script>
 
 <style scoped lang="scss">
@@ -24,12 +24,12 @@
 		}
 	}
 
-	@keyframes danger-animation {
-		0% {
-			background-color: rgba(var(--v-theme-primary), 0.2);
-		}
-		100% {
-			background-color: rgba(var(--v-theme-info), 0.2);
-		}
-	}
+	//@keyframes danger-animation {
+	//	0% {
+	//		background-color: rgba(var(--v-theme-primary), 0.2);
+	//	}
+	//	100% {
+	//		background-color: rgba(var(--v-theme-info), 0.2);
+	//	}
+	//}
 </style>

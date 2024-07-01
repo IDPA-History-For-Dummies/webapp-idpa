@@ -9,7 +9,7 @@ import LayoutApplication from "@/layouts/LayoutApplication.vue";
 import Test from "@/views/Test.vue";
 import i18n from "@/plugins/i18n";
 import NotFound from "@/views/NotFound.vue";
-import {useAuthStore} from "@/store/auth";
+// import {useAuthStore} from "@/store/auth";
 
 const routes = [
 	{
@@ -89,12 +89,12 @@ router.beforeEach((to, from) => {
 	document.title = titleParts.join(' | ');
 
 	//handle auth
-	const authStore = useAuthStore();
-	if (!authStore.isLoggedIn && to.name !== RouteNames.login) {
-		return {name: RouteNames.login};
-	} else if (authStore.isLoggedIn && to.name === RouteNames.login) {
-		return {name: RouteNames.home};
-	}
+	// const authStore = useAuthStore();
+	// if (!authStore.isLoggedIn && to.name !== RouteNames.login) {
+	// 	return {name: RouteNames.login};
+	// } else if (authStore.isLoggedIn && to.name === RouteNames.login) {
+	// 	return {name: RouteNames.home};
+	// }
 });
 
 export default router;
