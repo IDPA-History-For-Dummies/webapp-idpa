@@ -1,7 +1,6 @@
 {
   "application": {
-    "name": "IDPA History for Dummies",
-    "nameShort": "IDPA"
+    "name": "Programming for Dummies"
   },
   "page": {
     "home": "Home",
