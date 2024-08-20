@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-	baseURL: 'https://programmingfordummiesapi.azurewebsites.net/informatics-api/v1/informatics', // Prolly no die falsch addresse
+	baseURL: 'https://localhost:7167/informatics-api/v1/informatics', // Prolly no die falsch addresse
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -13,6 +13,9 @@ const api = {
 	},
 	checkCode(question: string, codesnippet: string) {
 		return apiClient.post(`/code-snippet`, {question, codesnippet });
+	},
+	getEvents(topicName: string) {
+		return apiClient.get(`/events/${topicName}`);
 	},
 };
 

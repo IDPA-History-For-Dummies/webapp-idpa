@@ -9,6 +9,7 @@ import LayoutApplication from "@/layouts/LayoutApplication.vue";
 import Test from "@/views/Test.vue";
 import i18n from "@/plugins/i18n";
 import NotFound from "@/views/NotFound.vue";
+import Timeline from "@/components/Timeline.vue";
 // import {useAuthStore} from "@/store/auth";
 
 const routes = [
@@ -38,6 +39,20 @@ const routes = [
 						path: '',
 						name: RouteNames.notFound,
 						component: NotFound,
+						meta: {
+							title: i18n.global.t('page.notFound'),
+						},
+					},
+				],
+			},
+			{
+				path: '/timeline',
+				component: LayoutModal,
+				children: [
+					{
+						path: '',
+						name: RouteNames.timeLine,
+						component: Timeline,
 						meta: {
 							title: i18n.global.t('page.notFound'),
 						},

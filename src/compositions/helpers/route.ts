@@ -6,6 +6,7 @@ export enum RouteNames {
 	user = 'User',
 	login = 'Login',
 	notFound = 'NotFound',
+	timeLine = 'timeLine',
 	test = 'Test',
 }
 
