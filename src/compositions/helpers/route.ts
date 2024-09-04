@@ -3,11 +3,10 @@ import router from "@/router";
 
 export enum RouteNames {
 	home = 'Home',
-	user = 'User',
-	login = 'Login',
 	notFound = 'NotFound',
-	timeLine = 'timeLine',
+	events = 'events',
 	test = 'Test',
+	programming = 'Programming',
 }
 
 export class RouteHelper {
