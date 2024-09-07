@@ -1,7 +1,6 @@
 import {AxiosError, AxiosHeaders, AxiosResponseHeaders, RawAxiosResponseHeaders} from "axios";
-import {IFrontendModel} from "@/models/common/FrontendModels";
 
-export class FrontendError extends Error implements IFrontendModel {
+export class FrontendError extends Error {
 
 	public message: string;
 
@@ -25,7 +24,7 @@ export type ValidationErrorData = {
 	errors: ValidationErrors;
 }
 
-export class ApiError extends FrontendError implements IFrontendModel {
+export class ApiError extends FrontendError {
 
 	public readonly statusCode: number | null;
 	public readonly statusText: string | null;
