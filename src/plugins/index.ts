@@ -6,7 +6,6 @@
 
 // Plugins
 import {loadFonts} from './webfontloader';
-import vuetify from './vuetify';
 import pinia from '../store';
 import router from '../router';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
@@ -19,7 +18,6 @@ export function registerPlugins(app: App) {
 	loadFonts();
 	app.component('font-awesome-icon', FontAwesomeIcon);
 	app
-		.use(vuetify)
 		.use(router)
 		.use(pinia)
 		.use(i18n);

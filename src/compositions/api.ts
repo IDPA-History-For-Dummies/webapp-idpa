@@ -1,19 +1,34 @@
-import axios from 'axios';
+import {AxiosError} from "axios";
+import {ApiError, ValidationError} from "@/models/common/ErrorModels";
+import {useAxios} from "@/compositions/axios";
 
-const apiClient = axios.create({
-	baseURL: 'https://programmingfordummiesapi.azurewebsites.net/informatics-api/v1/informatics', // Prolly no die falsch addresse
-	headers: {
-		'Content-Type': 'application/json',
-	},
-});
+export interface IApi {
+	get<T>(url: string, config?: IApiRequestConfig): Promise<T>;
+}
 
-const api = {
-	getTopic(topicName: string, language: string) {
-		return apiClient.get(`/${topicName}/${language}`);
-	},
-	checkCode(question: string, codesnippet: string) {
-		return apiClient.post(`/code-snippet`, {question, codesnippet });
-	},
-};
+export type ApiResponseType = 'json' | 'text';
 
-export default api;
+
+export interface IApiRequestConfig {
+	params?: any;
+	responseType?: ApiResponseType;
+}
+
+function convertAxiosError(error: AxiosError): ApiError {
+	return error.response?.status === 400
+		? new ValidationError(error)
+		: new ApiError(error);
+}
+
+export default function useApi(): IApi {
+	const axios = useAxios();
+
+	return {
+		async get<T>(url: string, config?: IApiRequestConfig): Promise<T> {
+			return axios
+				.get<T>(url, config)
+				.then(res => res.data)
+				.catch((error: AxiosError) => Promise.reject(convertAxiosError(error)));
+		},
+	};
+}

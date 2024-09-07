@@ -1,26 +1,33 @@
+// Components
 import App from './App.vue';
 
+// Composables
+import {createApp} from 'vue';
 
-import { createApp } from 'vue';
-
-import PrimeVue from 'primevue/config';
-import Aura from '@primevue/themes/aura';
-import 'primeicons/primeicons.css';
+// Plugins
 import ToastService from 'primevue/toastservice';
+import PrimeVue from 'primevue/config';
+import Lara from '@primevue/themes/lara';
 
-const app = createApp(App);
+//Styles
+import './scss/global.scss';
+import 'primeicons/primeicons.css'
+import router from "@/router";
+
+const app = createApp(App)
+	.use(router)
+	.use(ToastService);
 
 app.use(PrimeVue, {
 	theme: {
-		preset: Aura,
+		preset: Lara,
 		options: {
 			prefix: 'p',
-			darkModeSelector: 'system',
+			darkModeSelector: 'white',
 			cssLayer: false
 		},
 	},
 
 });
-app.use(ToastService);
 
 app.mount('#app');
