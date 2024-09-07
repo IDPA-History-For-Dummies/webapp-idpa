@@ -5,7 +5,8 @@ export enum RouteNames {
 	home = 'Home',
 	notFound = 'NotFound',
 	events = 'events',
-	test = 'Test',
+	quiz = 'quiz',
+	eventDetail = 'eventDetail',
 	programming = 'Programming',
 }
 

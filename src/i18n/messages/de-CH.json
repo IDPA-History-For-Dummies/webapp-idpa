@@ -9,6 +9,8 @@
     "profile": "Benutzerprofil",
     "login": "Login",
     "test": "Testseite",
-    "events": "Events"
+    "events": "Events",
+    "eventDetail": "Event-Detail",
+    "quizDetail": "Quiz"
   }
 }

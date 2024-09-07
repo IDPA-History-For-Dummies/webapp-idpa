@@ -2,32 +2,35 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import {RouteNames} from "@/compositions/helpers/route";
 import i18n from "@/plugins/i18n";
-import Home from "@/views/Home.vue";
+import EventDetail from "@/views/events/EventDetail.vue";
 import Events from "@/views/events/Events.vue";
 import Programming from "@/views/Programming.vue";
+import Quiz from "@/views/quiz/Quiz.vue";
 
 const routes = [
-
 	{
 		path: '/',
-		alias: ['', '/home'],
-		name: RouteNames.home,
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		//component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
-		component: Home,
-		meta: {
-			title: i18n.global.t('page.home'),
-			fixedHeight: true,
-		},
-	},
-	{
-		path: '/events',
+		alias: ['', '/events'],
 		name: RouteNames.events,
 		component: Events,
 		meta: {
 			title: i18n.global.t('page.events'),
+		},
+	},
+	{
+		path: '/event/:term',
+		name: RouteNames.eventDetail,
+		component: EventDetail,
+		meta: {
+			title: i18n.global.t('page.eventDetail'),
+		},
+	},
+	{
+		path: '/quiz/:term',
+		name: RouteNames.quiz,
+		component: Quiz,
+		meta: {
+			title: i18n.global.t('page.quizDetail'),
 		},
 	},
 	{

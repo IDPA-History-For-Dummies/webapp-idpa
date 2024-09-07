@@ -3,7 +3,7 @@
 		<div>
 			<div>
 				<slot>
-					<i class="pi pi-face-smile"></i> //TODO style bar better
+					<i class="pi pi-face-smile"></i>
 				</slot>
 			</div>
 			<p>

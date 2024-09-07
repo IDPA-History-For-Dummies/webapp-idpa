@@ -2,12 +2,15 @@
 	<div class="component-body">
 
 		<div class="container-center mb-3">
-			<InputText v-model="searchTerm" type="text" placeholder="Search" :disabled="loading"/>
+			<InputText v-model="searchTerm" type="text" placeholder="Search" :disabled="loading"
+			           @keyup.enter="performSearch"/>
 			<Button label="Search" @click="performSearch"
 			        class="p-button" :disabled="loading"/>
+			<Button label="Last Search" @click="getLastSearch" class="p-button" :disabled="loading"
+			        severity="secondary"/>
 		</div>
 		<div class="timeline-result">
-			<Timeline :value="timeLineEvents" align="alternate">
+			<Timeline v-if="!loading" :value="timeLineEvents" align="alternate">
 				<template #content="props">
 					<Card>
 						<template #title>
@@ -19,12 +22,18 @@
 						<template #content>
 							{{ props.item.shortDescription }}
 							<div class="show-more-container">
-								<Button label="Show more" class="show-more-button p-button mt-1"/>
+								<router-link class="router-link-btn show-more-button p-button mt-1"
+								             :to="{ name: RouteNames.eventDetail, params: { term: prepareUrl(props.item.eventTitle) }}">
+									Show more
+								</router-link>
 							</div>
 						</template>
 					</Card>
 				</template>
 			</Timeline>
+			<div class="loading-spinner" v-else>
+				<ProgressSpinner/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -33,147 +42,142 @@
 	import Timeline from 'primevue/timeline';
 	import Button from 'primevue/button';
 	import InputText from 'primevue/inputtext';
-	import {defineComponent, ref} from "vue";
+	import {defineComponent, onMounted, ref} from "vue";
 	import useEventService from "@/compositions/services/event";
 	import {useToast} from "primevue/usetoast";
 	import Card from "primevue/card";
+	import {RouteNames} from "@/compositions/helpers/route";
+	import ProgressSpinner from 'primevue/progressspinner';
 	import {IEvents} from "@/models/events/EventModels";
+
 
 	export default defineComponent({
 		name: 'TimelineComponent',
+		computed: {
+			RouteNames() {
+				return RouteNames
+			}
+		},
 		components: {
+			ProgressSpinner,
 			InputText,
 			Button,
 			Timeline,
 			Card,
 		},
+
 		setup() {
 			const eventService = useEventService();
 			const toast = useToast();
 
-			const loading = ref<boolean>(false)
+			const timelineLoading = ref<boolean>(false);
 			const searchTerm = ref<string | null>(null);
-			const timeLineEvents = ref<IEvents | null>(null)
-			// const timeLineEvents = [
-			// 	{
-			// 		"event": "Birth of East Coast Hip Hop with DJ Kool Herc's 'Back to School Jam' in the Bronx",
-			// 		"date": "1973-08-11T00:00:00",
-			// 		"eventTitle": "Birth of East Coast Hip Hop"
-			// 	},
-			// 	{
-			// 		"event": "Sugarhill Gang releases 'Rapper's Delight', the first Hip Hop single to become a Top 40 hit",
-			// 		"date": "1979-09-16T00:00:00",
-			// 		"eventTitle": "'Rapper's Delight' Release"
-			// 	},
-			// 	{
-			// 		"event": "Grandmaster Flash and The Furious Five's 'The Message' becomes the first significant socio-political rap song",
-			// 		"date": "1982-07-01T00:00:00",
-			// 		"eventTitle": "'The Message' Release"
-			// 	},
-			// 	{
-			// 		"event": "Run-DMC releases 'Sucker M.C.'s', a song that set the aesthetics of East Coast Hip Hop",
-			// 		"date": "1983-03-12T00:00:00",
-			// 		"eventTitle": "'Sucker M.C.'s' Release"
-			// 	},
-			// 	{
-			// 		"event": "Public Enemy releases 'Fight the Power', a significant and influential song in the political hip hop movement",
-			// 		"date": "1989-06-01T00:00:00",
-			// 		"eventTitle": "'Fight the Power' Release"
-			// 	},
-			// 	{
-			// 		"event": "The Golden Age of Hip Hop, a period of time when influential, innovative, and diverse Hip Hop music was produced",
-			// 		"date": "1986-01-01T00:00:00",
-			// 		"eventTitle": "Start of Golden Age of Hip Hop"
-			// 	},
-			// 	{
-			// 		"event": "The end of the Golden Age of Hip Hop",
-			// 		"date": "1994-12-31T00:00:00",
-			// 		"eventTitle": "End of Golden Age of Hip Hop"
-			// 	},
-			// 	{
-			// 		"event": "The Notorious B.I.G. releases 'Ready to Die', a cornerstone album of East Coast Gangsta Rap",
-			// 		"date": "1994-09-13T00:00:00",
-			// 		"eventTitle": "'Ready to Die' Release"
-			// 	},
-			// 	{
-			// 		"event": "The murder of The Notorious B.I.G., a significant moment in the East Coast-West Coast Hip Hop rivalry",
-			// 		"date": "1997-03-09T00:00:00",
-			// 		"eventTitle": "Death of The Notorious B.I.G."
-			// 	},
-			// 	{
-			// 		"event": "Jay-Z releases 'Hard Knock Life (Ghetto Anthem)', one of the most commercially successful East Coast rap songs",
-			// 		"date": "1998-09-29T00:00:00",
-			// 		"eventTitle": "'Hard Knock Life' Release"
-			// 	}
-			// ]
+			const timeLineEvents = ref<IEvents | null>(null);
 
+			const CACHE_KEY = 'timelineEventsCache';
+			const LAST_SEARCH_KEY = 'lastSearchTerm';
+
+			// Retrieve cached event data
+			function getCachedData(searchTerm: string) {
+				const cachedData = localStorage.getItem(`${CACHE_KEY}_${searchTerm}`);
+				return cachedData ? JSON.parse(cachedData) : null;
+			}
+
+			// Cache the event data
+			function setCacheData(searchTerm: string, data: IEvents) {
+				localStorage.setItem(`${CACHE_KEY}_${searchTerm}`, JSON.stringify(data));
+			}
+
+			// Save the last search term
+			function setLastSearchTerm(searchTerm: string) {
+				localStorage.setItem(LAST_SEARCH_KEY, searchTerm);
+			}
+
+			// Get the last search term from the cache
+			function getLastSearchTerm() {
+				return localStorage.getItem(LAST_SEARCH_KEY);
+			}
+
+			// Perform search, first checking the cache
 			async function performSearch() {
-				if (searchTerm.value !== null && searchTerm.value !== '' && !loading.value) {
-					await executeRequest(searchTerm.value);
+				if (searchTerm.value !== null && searchTerm.value !== '' && !timelineLoading.value) {
+					const cachedData = getCachedData(searchTerm.value);
+					if (cachedData) {
+						timeLineEvents.value = cachedData;
+					} else {
+						await executeRequest(searchTerm.value);
+					}
+					setLastSearchTerm(searchTerm.value); // Store the current search term as the last search
 				}
 			}
 
+			// Execute the API request and cache the result
 			async function executeRequest(searchTerm: string) {
 				try {
-					loading.value = true;
+					timelineLoading.value = true;
 					const response = await eventService.events(searchTerm);
 					timeLineEvents.value = response;
+
+					// Cache the fetched data
+					setCacheData(searchTerm, response);
 				} catch (error) {
 					console.error('Request failed with error:', error);
 					toast.add({
 						severity: 'error',
 						summary: 'Error with a request',
-						detail: 'An error occured with a request',
+						detail: 'An error occurred with the request',
 						life: 5000
 					});
 				} finally {
-					loading.value = false;
+					timelineLoading.value = false;
 				}
 			}
 
+			// Get the last search from cache and perform the search
+			async function getLastSearch() {
+				const lastSearch = getLastSearchTerm();
+				if (lastSearch) {
+					searchTerm.value = lastSearch;
+					await performSearch();
+				} else {
+					toast.add({
+						severity: 'info',
+						summary: 'No Last Search Found',
+						detail: 'No previous search term found in the cache.',
+						life: 5000
+					});
+				}
+			}
+
+			// Automatically load the last search term from cache on component mount
+			onMounted(async () => {
+				await getLastSearch();
+			});
+
+			// Helper functions
 			function toDate(dateString: string) {
 				const date = new Date(dateString);
 				return date.toLocaleDateString('de-CH');
 			}
 
+			function prepareUrl(eventTitle: string) {
+				return eventTitle.replaceAll(' ', '-');
+			}
+
 			return {
-				loading,
+				loading: timelineLoading,
 				searchTerm,
 				timeLineEvents,
 				performSearch,
 				toDate,
+				prepareUrl,
+				getLastSearch,
 			};
 		}
 	});
 </script>
 
 <style scoped lang="scss">
-
-	.component-body {
-		width: 100%;
-		margin-top: 72.5px;
-		border-radius: 20px;
-	}
-
-	.container-center {
-		display: flex;
-		justify-content: center;
-		gap: 1rem;
-		padding-top: 3rem;
-	}
-
-	.mb-3 {
-		margin-bottom: 3rem;
-	}
-
-	.mt-3 {
-		margin-top: 3rem;
-	}
-
-	.mt-1 {
-		margin-top: 1rem;
-	}
-
 	.show-more-container:nth-child(even) {
 		flex-direction: row;
 
@@ -192,5 +196,4 @@
 			width: 70%;
 		}
 	}
-
 </style>
