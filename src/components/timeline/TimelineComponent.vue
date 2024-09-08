@@ -48,7 +48,7 @@
 	import Card from "primevue/card";
 	import {RouteNames} from "@/compositions/helpers/route";
 	import ProgressSpinner from 'primevue/progressspinner';
-	import {IEvents} from "@/models/events/EventModels";
+	import {EventListEntry, IEvents} from "@/models/events/EventModels";
 
 
 	export default defineComponent({
@@ -116,13 +116,15 @@
 				try {
 					timelineLoading.value = true;
 					const response: IEvents = await eventService.events(searchTerm);
+
 					if (response) {
-						response.sort((a, b) => {
+						response.events.sort((a: EventListEntry, b: EventListEntry) => {
 							const dateA = new Date(a.date);
 							const dateB = new Date(b.date);
 							return dateA.getTime() - dateB.getTime();
-						})};
-					timeLineEvents.value = response;
+						});
+					}
+
 
 					// Cache the fetched data
 					setCacheData(searchTerm, response);

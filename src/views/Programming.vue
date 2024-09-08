@@ -139,7 +139,7 @@
 				} catch (error) {
 					console.error('Failed to load theme:', error);
 					theme.value = null;
-					toast.add({
+					Toast.add({
 						severity: 'error',
 						summary: 'Error getting Data',
 						detail: 'An Error occurred while getting Data',
@@ -162,14 +162,14 @@
 					try {
 						checkLoading.value = true;
 						// const response = await api.checkCode(theme.value.question, codeSnippet.value);
-						toast.add({
+						Toast.add({
 							// severity: response.data.questionAnswered ? 'success' : 'error',
 							// summary: response.data.questionAnswered ? 'Correct' : 'Incorrect',
 							// detail: response.data.hint,
 						});
 					} catch (error) {
 						console.error('Failed to submit code snippet:', error);
-						toast.add({
+						Toast.add({
 							severity: 'error',
 							summary: 'Error',
 							detail: 'Failed to submit code snippet',

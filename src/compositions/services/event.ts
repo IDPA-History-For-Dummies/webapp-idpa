@@ -1,5 +1,5 @@
 import useApi from "@/compositions/api";
-import {IEventDetail, IEvents} from "@/models/events/EventModels";
+import {EventListEntry, IEventDetail, IEvents} from "@/models/events/EventModels";
 
 const api = useApi();
 
