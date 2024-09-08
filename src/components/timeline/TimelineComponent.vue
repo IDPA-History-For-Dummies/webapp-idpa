@@ -10,7 +10,7 @@
 			        severity="secondary"/>
 		</div>
 		<div class="timeline-result">
-			<Timeline v-if="!loading" :value="timeLineEvents" align="alternate">
+			<Timeline v-if="!loading" :value="timeLineEvents?.events" align="alternate">
 				<template #content="props">
 					<Card>
 						<template #title>
@@ -125,7 +125,7 @@
 						});
 					}
 
-
+					timeLineEvents.value = response;
 					// Cache the fetched data
 					setCacheData(searchTerm, response);
 				} catch (error) {
