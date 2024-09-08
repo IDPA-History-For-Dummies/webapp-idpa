@@ -6,8 +6,8 @@
 			           @keyup.enter="performSearch"/>
 			<Button label="Search" @click="performSearch"
 			        class="p-button" :disabled="loading"/>
-			<Button label="Last Search" @click="getLastSearch" class="p-button" :disabled="loading"
-			        severity="secondary"/>
+<!--			<Button label="Last Search" @click="getLastSearch" class="p-button" :disabled="loading"-->
+<!--			        severity="secondary"/>-->
 		</div>
 		<div class="timeline-result">
 			<Timeline v-if="!loading" :value="timeLineEvents?.events" align="alternate">
