@@ -115,7 +115,13 @@
 			async function executeRequest(searchTerm: string) {
 				try {
 					timelineLoading.value = true;
-					const response = await eventService.events(searchTerm);
+					const response: IEvents = await eventService.events(searchTerm);
+					if (response) {
+						response.sort((a, b) => {
+							const dateA = new Date(a.date);
+							const dateB = new Date(b.date);
+							return dateA.getTime() - dateB.getTime();
+						})};
 					timeLineEvents.value = response;
 
 					// Cache the fetched data
